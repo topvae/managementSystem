@@ -1,0 +1,14 @@
+注意：预警模块的baseform和chooseProduct组件都是用的服务模块
+
+1.formlist中参数以及ID后期需要修改     已完成
+2.index.js 文件中的handleAlertServiceSubmit方法需要改参数   已完成
+3.公用一个form，请求名称的时候请求接口需要做判断是那个模块  
+4.formlist validatorType写的字段是serveName，需要更换一下  ok
+
+
+
+
+预警服务模块bug：
+1.复制修改模块有时赋值不成功
+2.请求接口两次
+3.服务名称校验

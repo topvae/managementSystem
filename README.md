@@ -1,1 +1,3 @@
-# managementSystem
+yarn 
+yarn start 
+yarn build

@@ -1,0 +1,107 @@
+@import './loading.less';
+html,body {
+    background: #F0F2F5;
+}
+#root{
+  height:100%;
+}
+ul,li{
+    list-style: none;
+}
+.clearfix{
+    &::after{
+        content:' ';
+        clear:both;
+        display: block;
+        visibility: hidden;
+    }
+}
+.container{
+    display: flex; 
+    .nav-left{ 
+        background: #001529;
+        height:calc(100vh);
+    }
+    .main{
+        flex:1;
+        height:calc(100vh);
+        overflow: auto;  
+    }
+    .edit{
+        cursor: pointer;
+        color:#1890FF;
+    }
+}
+.content-wrap{  
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    margin-top: -3px;
+    .ant-table-wrapper{
+        margin-left: -1px;
+        margin-right: -2px;
+    }
+    
+}
+button{
+    margin-right: 10px;
+}
+.twoEllipsis{
+  overflow:hidden; 
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  /* autoprefixer: off */
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2; 
+  word-break: break-all;
+}
+.tip{
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+.ant-upload-list-item .anticon-close{
+  right: 0px!important;
+}
+.ant-upload-list-item-name{
+  padding-right: 11px!important;
+}
+.ant-table-tbody > tr > td{
+  word-break: break-all!important;
+}
+
+
+.like_a{
+  display: inline-block;
+  cursor: pointer;
+  color: #4091f7;
+  margin-right: 10px;
+}
+
+.ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td { background: white!important; }
+
+.basic-circle {
+  display:inline-block;
+  width:8px;
+  height:8px;
+  border-radius: 50%;
+  margin-right: 5px;
+  text-align: center;
+  
+}
+// 未生效，可用不可见都是橘色
+.orange-circle {
+  background:rgba(250,173,20,1);
+}
+
+// 生效 绿色
+.green-circle {
+  background:rgba(82,196,26,1);
+}
+
+// 失效是灰色
+.grey-circle {
+  background:rgba(0,0,0,0.25);
+}
+
+.searchCard .ant-card-body {
+  padding: 31px 24px 7px!important;
+}
