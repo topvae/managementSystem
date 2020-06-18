@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-02-17 16:25:42
- * @LastEditTime: 2020-02-17 16:53:48
+ * @LastEditTime: 2020-06-18 16:51:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /credit-admin/src/router.js
@@ -13,8 +13,6 @@ import { connect } from 'react-redux'
 import App from './App.js'
 import Admin from './admin'
 import Home from './pages/home'
-import AddOrEditAlertService from './../src/pages/serviceManagement/warningService/addOrEditAlertService'
-import AddOrEditService from './../src/pages/serviceManagement/queryService/addOrEditService'
 // import LogDetails from './../src/pages/systemManagement/operationLogs/details'
 import { routerList } from './config/routerConfig'
 import { MyLoadingComponent } from './utils/utils'
@@ -38,7 +36,8 @@ class Routers extends React.Component {
   }
 
   render() {
-    const { menuTreeList } = this.state
+    // const { menuTreeList } = this.state
+    // console.log(routerList, '--routerList')
     return (
       <HashRouter>
         <App>
@@ -50,10 +49,8 @@ class Routers extends React.Component {
                 <Switch>
                   <Route path='/home' exact component={ Home }></Route>
                   <Route path='/' exact component={ Home }></Route>
-                  <Route path='/serviceManagement/warningService/showServiceDetails' exact component={ AddOrEditAlertService }></Route>
-                  <Route path='/serviceManagement/queryService/showServiceDetails' exact component={ AddOrEditService }></Route>
                   {/* <Route path='/systemManagement/operationLogs/details' exact component={ LogDetails }></Route> */}
-                  {
+                  {/* {
                     menuTreeList.length > 0 && menuTreeList.map(item => {
                       // url存在就是目录，菜单，点击按钮进入的二级菜单
                       if (item.url) {
@@ -64,7 +61,10 @@ class Routers extends React.Component {
                       }
                       return null
                     })
-                  }
+                  } */}
+                  {routerList.length > 0 && routerList.map(item => {
+                    return <Route key={ item.path } path={ item.path } exact component={ item.component }></Route>
+                  })}
                 </Switch>
               </Admin>)
             }></Route>

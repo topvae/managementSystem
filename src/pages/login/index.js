@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2019-11-04 10:29:51
- * @LastEditTime : 2020-02-14 14:37:12
- * @LastEditors  : Please set LastEditors
+ * @LastEditTime: 2020-06-16 09:29:47
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /workspace/credit-admin/src/pages/login/index.js
  */
@@ -40,8 +40,8 @@ class Login extends Component {
         <img src={ './assets/bgCover.png' } className='bg_cover' alt='' />
         <div className='login-form'>
           <div className='form_title'>
-            <img src={ './assets/logo.png' } alt='' />
-            <span className='title_right'>信用系统管理平台</span>
+            {/* <img src={ './assets/logo.png' } alt='' /> */}
+            <span className='title_right'>系统管理平台</span>
           </div>
           <Form onSubmit={ this.handleSubmit } className='form_body'>
             <h3>密码登录</h3>

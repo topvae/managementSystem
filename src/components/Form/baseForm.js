@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-29 10:42:36
- * @LastEditTime: 2020-03-18 10:54:16
+ * @LastEditTime: 2020-06-17 14:56:25
  * @LastEditors: Please set LastEditors
  */
 import React from 'react'
@@ -18,12 +18,10 @@ import {
   Radio,
   Tree
 } from 'antd'
-import ChooseProduct from '../../pages/serviceManagement/queryService/chooseProduct'
 import { validatorName } from '../../utils/utils'
 import moment from 'moment'
 import axios from 'axios'
 import 'moment/locale/zh-cn'
-import './../../pages/serviceManagement/queryService/index.less'
 moment.locale('zh-cn')
 const FormItem = Form.Item
 const { TextArea } = Input
@@ -656,25 +654,6 @@ class ServiceForm extends React.Component {
             </FormItem>
           )
           formItemList.push(SELECT)
-        } else if (item.type === 'SELECT_BTN') {
-          const showServiceDetails = window.location.href.includes('showServiceDetails')
-          const label1 = item.label1
-          const SELECTBTN = (
-            <div className='relaDiv' key={ field }>
-              <FormItem label={ showServiceDetails ? label1 : label } { ...formItemLayout } >
-                {getFieldDecorator(field)(
-                  <ChooseProduct
-                    showProductNo={ this.showProductNo }
-                    productName={ this.state.productName }
-                    ShowErrMsg={ this.ShowErrMsg } // 子组件调用父组件的方法改变ifShowErr状态
-                    ifShowErr={ this.state.ifShowErr } // 控制选择产品errorMsg的显示
-                  />
-                )}
-              </FormItem>
-            </div>
-
-          )
-          formItemList.push(SELECTBTN)
         } else if (item.type === 'DATE') {
           // 初始化时间  不传默认当天时间
           const defaultValue = item.defaultValue || moment().format('YYYY-MM-DD')

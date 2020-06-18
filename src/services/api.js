@@ -2,25 +2,22 @@
  * @Description: In User Settings Edit
  * @Author: ysk
  * @Date: 2019-09-29 10:42:36
- * @LastEditTime: 2020-03-19 10:35:25
+ * @LastEditTime: 2020-06-17 15:30:40
  * @LastEditors: Please set LastEditors
  */
 import { stringify } from 'qs'
 import { request } from '../axios/index'
 
-// ----------------------------   所有接口必须加上  /api  后端端口 转发到 /api 上面   --------------------------------
-
-// ------------------------------------公共---------------------------------------
-// 数据使用机构类型	data_use_organization_type
-// 数据源优先级	data_source_priority
-// 数据源启用状态	source_start_status
-// 数据类型	source_data_type
-// 机构业务类型	office_business_type
-// 信用报告证件类型 - 个人：person_id_number_type
-// 信用报告证件类型 - 企业：t_credit_subject_company
-export async function get_options(params) {
-  return request(`/api/credit-user/user/sysDataDic/queryDictByClassify?${ stringify(params) }`, {}, 'GET')
+// 证件号和订单号查询接口
+export async function get_baseProducts_list(params) {
+  return request('https://www.easy-mock.com/mock/5ce51b8e35cff95dda329618/credit/orderList', params, 'GET')
 }
+// 左侧导航栏接口
+// export async function get_menu_tree(params) {
+//   return request('https://www.easy-mock.com/mock/5ce51b8e35cff95dda329618/credit/navleft', { ...params }, 'GET', false)
+//   // return process.env.NODE_ENV === 'development' ?  request('/api/credit-user/user/sysMenu/menuTree',{...params},'GET',false) : request('/api/credit-user/user/sysMenu/nav',{...params},'GET',false)
+//   // https://www.easy-mock.com/mock/5ce51b8e35cff95dda329618/credit/nav
+// }
 
 // ------------------------------------零件产品---------------------------------------
 // 获取原子零件列表
@@ -56,10 +53,10 @@ export async function queryComponentPageByComponentIds(params) {
   return request(`/api/credit-component/component/queryComponentPageByComponentIds?${ stringify(params) }`, {}, 'POST')
 }
 
-// 获取产品list的列表
-export async function get_baseProducts_list(params) {
-  return request('/api/credit-product/product/page', params, 'GET')
-}
+// // 获取产品list的列表
+// export async function get_baseProducts_list(params) {
+//   return request('/api/credit-product/product/page', params, 'GET')
+// }
 // 获取产品配置模块的零件列表
 export async function get_avaliableparts_list(params) {
   return request('/api/credit-component/component/avaliableSourceComponentPage', { ...params }, 'POST', false)
@@ -413,13 +410,14 @@ export async function data_shutdown(params) {
 // --------------------------------------------用户角色管理---------------------------------------
 
 // 菜单权限
-// export async function get_menu_tree(params){
-//   return request('/api/credit-user/user/sysMenu/menuTree',{...params},'GET',false)
-// }
 export async function get_menu_tree(params) {
-  return request('/api/credit-user/user/sysMenu/nav', { ...params }, 'GET', false)
-  // return process.env.NODE_ENV === 'development' ?  request('/api/credit-user/user/sysMenu/menuTree',{...params},'GET',false) : request('/api/credit-user/user/sysMenu/nav',{...params},'GET',false)
+  return request('/api/credit-user/user/sysMenu/menuTree', { ...params }, 'GET', false)
 }
+// export async function get_menu_tree(params) {
+//   return request('https://www.easy-mock.com/mock/5ce51b8e35cff95dda329618/credit/navleft', { ...params }, 'GET', false)
+//   // return process.env.NODE_ENV === 'development' ?  request('/api/credit-user/user/sysMenu/menuTree',{...params},'GET',false) : request('/api/credit-user/user/sysMenu/nav',{...params},'GET',false)
+//   // https://www.easy-mock.com/mock/5ce51b8e35cff95dda329618/credit/nav
+// }
 
 // 部门权限
 export async function get_dep_tree(params) {

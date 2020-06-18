@@ -20,31 +20,47 @@ function NavLeft(props) {
 
   useEffect(() => {
     const sessionOpenKeys = sessionStorage.getItem('openKeys')
-    setOpenKeys(sessionOpenKeys ? [].concat(JSON.parse(sessionOpenKeys)) : ['/product'])
+    setOpenKeys(
+      sessionOpenKeys ? [].concat(JSON.parse(sessionOpenKeys)) : ['/product']
+    )
   }, [pathname])
 
   useEffect(() => {
     const urlList = []
-    const renderMenu = (data) => {
-      const arr = data.map((item) => {
+    const renderMenu = data => {
+      const arr = data.map(item => {
         if (item.type === 0) {
           urlList.push(item.url)
         }
         if (item.nodes && item.nodes.length > 0) {
-          const IconFontHtml = item.icon ? <IconFont type={ `${ item.icon }` } /> : null
+          const IconFontHtml = item.icon ? (
+            <IconFont type={ `${ item.icon }` } />
+          ) : null
           return (
-            <SubMenu title={ <span>{ IconFontHtml }<span>{item.name}</span></span> } key={ item.url }>
+            <SubMenu
+              title={
+                <span>
+                  { IconFontHtml }
+                  <span>{ item.name }</span>
+                </span>
+              }
+              key={ item.url }
+            >
               {renderMenu(item.nodes)}
             </SubMenu>
           )
         }
-        const IconFontHtml = item.icon ? <IconFont type={ `${ item.icon }` } className='icon' /> : null
-        return (<Menu.Item key={ item.url }>
-          <NavLink to={ item.url }>
-            { IconFontHtml }
-            <span>{item.name}</span>
-          </NavLink>
-        </Menu.Item>)
+        const IconFontHtml = item.icon ? (
+          <IconFont type={ `${ item.icon }` } className='icon' />
+        ) : null
+        return (
+          <Menu.Item key={ item.url }>
+            <NavLink to={ item.url }>
+              { IconFontHtml }
+              <span>{ item.name }</span>
+            </NavLink>
+          </Menu.Item>
+        )
       })
       setRootSubmenuKeys(urlList)
       return arr
@@ -60,21 +76,26 @@ function NavLeft(props) {
 
   const onOpenChange = useCallback(
     changeOpenKeys => {
-      const latestOpenKey = changeOpenKeys.find(key => { return openKeys.indexOf(key) === -1 })
+      const latestOpenKey = changeOpenKeys.find(key => {
+        return openKeys.indexOf(key) === -1
+      })
       if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
         setOpenKeys(changeOpenKeys)
         sessionStorage.setItem('openKeys', JSON.stringify(changeOpenKeys))
       } else {
         setOpenKeys(latestOpenKey ? [latestOpenKey] : [])
-        sessionStorage.setItem('openKeys', latestOpenKey ? JSON.stringify([latestOpenKey]) : [])
+        sessionStorage.setItem(
+          'openKeys',
+          latestOpenKey ? JSON.stringify([latestOpenKey]) : []
+        )
       }
-    }, [openKeys, rootSubmenuKeys])
-
+    },
+    [openKeys, rootSubmenuKeys]
+  )
+  // console.log(menuTreeList)
   return (
     <div className=''>
-      <div className='menuFonts'>
-        征信系统
-      </div>
+      <div className='menuFonts'>管理系统</div>
       <Menu
         mode='inline'
         theme='dark'
@@ -82,20 +103,62 @@ function NavLeft(props) {
         onOpenChange={ onOpenChange }
         selectedKeys={ pathname }
       >
-        {menuTreeList}
+        {/* {menuTreeList} */}
+        <SubMenu key='/product' title='客诉查询'>
+          <Menu.Item key='/product/parts'>
+            <NavLink to={ '/product/parts' }>
+              <span>{ '订单号查询' }</span>
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item key='/product/configuration'>
+            <NavLink to={ '/product/configuration' }>
+              <span>{ '证件号查询' }</span>
+            </NavLink>
+          </Menu.Item>
+        </SubMenu>
+        <Menu.Item key='/aggregation'>
+          <NavLink to={ '/aggregation' }>
+            <span>{ '聚合查询查询' }</span>
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key='/dashboard'>
+          <NavLink to={ '/dashboard' }>
+            <span>{ 'DashBoard' }</span>
+          </NavLink>
+        </Menu.Item>
+        <SubMenu key='/authority' title='用户角色管理'>
+          <Menu.Item key='/authority/roleManage'>
+            <NavLink to={ '/authority/roleManage' }>
+              <span>{ '角色管理' }</span>
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item key='/authority/userManage'>
+            <NavLink to={ '/authority/userManage' }>
+              <span>{ '用户管理' }</span>
+            </NavLink>
+          </Menu.Item>
+        </SubMenu>
+        <Menu.Item key='/operationLogs'>
+          <NavLink to={ '/operationLogs' }>
+            <span>{ '日志管理' }</span>
+          </NavLink>
+        </Menu.Item>
       </Menu>
     </div>
   )
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     menu: state,
-    selectedKeys: Object.keys(state.setMenuSelected).length > 0 ? [state.setMenuSelected.selectedKeys.data] : []
+    selectedKeys:
+      Object.keys(state.setMenuSelected).length > 0
+        ? [state.setMenuSelected.selectedKeys.data]
+        : []
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     getMenuTreeFn: () => dispatch(menu())
   }

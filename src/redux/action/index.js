@@ -1,7 +1,7 @@
 /*
  * @Author: ysk
  * @Date: 2019-11-04 14:10:10
- * @LastEditTime: 2019-11-12 14:25:22
+ * @LastEditTime: 2020-06-16 10:41:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /credit-admin/src/redux/action/index.js
@@ -46,6 +46,7 @@ export const setNavLeft = (data) => {
 // 将请求来的树状图 设置给reducer的state
 export const menu = () => (dispatch) => {
   get_menu_tree().then(res => {
+    console.log(res, '---res')
     const { responseData } = res.data
     dispatch(getMenuTreeAction(responseData))
   })

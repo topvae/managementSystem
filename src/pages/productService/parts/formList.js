@@ -1,41 +1,52 @@
 /*
  * @Author: your name
  * @Date: 2019-11-04 14:10:10
- * @LastEditTime : 2020-02-14 13:25:47
- * @LastEditors  : Please set LastEditors
+ * @LastEditTime: 2020-06-17 11:26:29
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /credit-admin/src/pages/productService/parts/formList.js
  */
+import moment from 'moment'
+const formItemLayout = {
+  labelCol: {
+    span: 6
+  },
+  wrapperCol: {
+    span: 18
+  }
+}
 export const formList = [
   {
     type: 'INPUT',
-    label: '零件名称',
-    field: 'componentName',
-    placeholder: '请输入',
-    requiredMsg: '请输入',
-    width: 180
-  }, {
-    type: 'SELECT',
-    label: '一级分类',
-    field: 'officeId',
-    placeholder: '请输入',
+    label: '订单号',
+    field: 'dingdan',
     width: 180,
-    searchType: 1
-  }, {
-    type: 'SELECT',
-    label: '二级分类',
-    field: 'departmentId',
-    placeholder: '请输入',
-    width: 180,
-    searchType: 2,
-    noAffect: true // 设置了以后不受一级名称影响  可以单独搜索
-  }, {
+    formItemLayout: formItemLayout
+  },
+  {
     type: 'INPUT',
-    label: '用途名称',
-    field: 'purpose',
-    placeholder: '请输入',
-    width: 180
-  }
+    label: '商户号',
+    field: 'shanghu',
+    width: 180,
+    formItemLayout: formItemLayout
+  },
+  {
+    type: 'DATE',
+    label: '开始日期',
+    field: 'start',
+    formItemLayout: formItemLayout,
+    width: 180,
+    defaultValue: moment()
+      .subtract(1, 'days')
+      .format('YYYY-MM-DD')
+    // disabledDate: moment().format('YYYY-MM-DD')
+  }, {
+    type: 'DATE',
+    label: '结束日期',
+    field: 'end',
+    formItemLayout: formItemLayout,
+    width: 180,
+    defaultValue: moment().format('YYYY-MM-DD') }
 ]
 
 export const config = {

@@ -4,13 +4,17 @@ import './index.less'
 import { Row, Col, Card, Button, Modal, message } from 'antd'
 import BaseForm from '../../../components/Form'
 import BaseTable from '../../../components/Table/BaseTable'
-import { formList, config } from './formList'
-import { get_users_list, post_user_delete } from './../../../services/api'
+import { formList, config, users, usersconfig } from './formList'
+import { get_roles_list, post_user_delete } from './../../../services/api'
 import { wrapAuth } from '../../../components/AuthButton'
 const AuthButton = wrapAuth(Button)
 
 function RoleManage(props) {
   const [tableData, setTableData] = useState([]) // list数据
+  const [userData, setUserData] = useState(users) // 用户数据
+  const [formRef, setFormRef] = useState()
+  const [visible, setVisible] = useState(false) // 新增用户的弹窗
+  const [isEdit, setIsEdit] = useState(false)
   const [responseData, setResponseData] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([]) // 选中项的 key 数组
   // const [selectedRows,setSelectedRows] = useState([]);   //选中的数组
@@ -18,14 +22,14 @@ function RoleManage(props) {
   const tableColumns = [
     {
       title: '用户ID',
-      dataIndex: 'userId',
-      key: 'userId',
+      dataIndex: 'roleId',
+      key: 'roleId',
       width: 200
     },
     {
       title: '用户名',
-      dataIndex: 'username',
-      key: 'username',
+      dataIndex: 'roleName',
+      key: 'roleName',
       width: 200
     },
     {
@@ -81,11 +85,12 @@ function RoleManage(props) {
       width: 200
     }
   ]
-
+  const userArr = [{ id: 1, rule: '管理员' }, { id: 2, rule: '研发人员' }, { id: 3, rule: '测试人员' }]
+  const userInfo = { username: 'vae', roleIds: 2 }
   const requestList = useCallback(
     async(page) => {
       params.page = page
-      const res = await get_users_list({ ...params })
+      const res = await get_roles_list({ ...params })
       const Data = res.data.responseData
       const records = res.data.responseData.records
       setTableData(records)
@@ -113,14 +118,27 @@ function RoleManage(props) {
     setParams({ page: 1 })
   }
 
-  // 新增用户
-  const addOrganization = () => {
-    props.history.push({ pathname: '/authority/userManage/addUserManage' })
+  // 新增用户(打开弹窗)
+  const addOrganization = useCallback(() => {
+    // props.history.push({ pathname: '/authority/userManage/addUserManage' })
+    setVisible(true)
+    setIsEdit(false)
+    userData[1].rules = userArr
+    setUserData([...userData])
+  }, [userData, userArr])
+  // 关闭弹窗
+  const handleCancel = () => {
+    setVisible(false)
   }
+
   // 修改用户
-  const editOrganization = (ids) => {
-    props.history.push({ pathname: `/authority/userManage/editUserManage/${ ids }` })
-  }
+  const editOrganization = useCallback((ids) => {
+    // 请求详情接口
+    setVisible(true)
+    setIsEdit(true)
+    userData[1].rules = userArr
+    setUserData([...userData])
+  }, [userData, userArr])
 
   // 删除用户
   const deleteUser = () => {
@@ -141,6 +159,41 @@ function RoleManage(props) {
       })
     }
   }
+  // 用户新增
+  const addRole = useCallback(params => {
+    setVisible(false)
+    requestList()
+    //   post_user_add({ ...params }).then(res => {
+    //     Modal.success({
+    //       title: '用户新增成功'
+    //     })
+    //   })
+  }, [requestList])
+  // 用户修改
+  const editRole = useCallback(params => {
+    setVisible(false)
+    requestList()
+    // post_user_updata({ ...params, userId: Id }).then(res => {
+    //   Modal.success({
+    //     title: '用户修改成功'
+    //   })
+  }, [requestList])
+  // 保存
+  const filterSubmit = useCallback(
+    (e) => {
+      const { form } = formRef.props
+      e.preventDefault()
+      form.validateFields((err, values) => {
+        if (!err) {
+          const fieldsValue = form.getFieldsValue()
+          if (isEdit) {
+            editRole(fieldsValue)
+          } else {
+            addRole(fieldsValue)
+          }
+        }
+      })
+    }, [formRef, editRole, addRole, isEdit])
 
   return (
     <div className='userManage'>
@@ -173,6 +226,23 @@ function RoleManage(props) {
           request={ requestList }
         />
       </Card>
+      <Modal
+        width={ 500 }
+        className='productTable'
+        title={ isEdit ? '修改用户' : '新增用户' }
+        visible={ visible }
+        maskClosable={ false }
+        onCancel={ handleCancel }
+        onOk={ filterSubmit }
+        // footer={ null }
+      >
+        { <BaseForm
+          wrappedComponentRef={ inst => (setFormRef(inst)) }
+          formList={ userData }
+          config={ usersconfig }
+          updateList={ userInfo }
+        /> }
+      </Modal>
     </div>
   )
 }
