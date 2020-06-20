@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-08 09:46:29
- * @LastEditTime: 2020-06-18 16:51:47
+ * @LastEditTime: 2020-06-19 16:26:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /managementSystem/src/pages/authority/userManage/formList.js
@@ -18,11 +18,33 @@ const formItemLayout = {
 export const formList = [
   {
     type: 'INPUT',
-    label: '用户名称',
+    label: '姓名',
+    field: 'name',
+    placeholder: '请输入',
+    width: 180
+  },
+  {
+    type: 'INPUT',
+    label: 'ITC账号',
     field: 'username',
     placeholder: '请输入',
-    requiredMsg: '请输入',
     width: 180
+  },
+  {
+    type: 'INPUT',
+    label: '角色Id',
+    field: 'roleId',
+    placeholder: '请输入',
+    width: 180
+  },
+  {
+    type: 'SELECT_OPTIONS',
+    label: '状态',
+    field: 'status',
+    placeholder: '请选择',
+    width: 180,
+    formItemLayout: formItemLayout,
+    rules: [{ id: 0, rule: '正常' }, { id: 1, rule: '冻结' }]
   }
 ]
 

@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { withRouter } from 'react-router-dom'
-import { Card, Button } from 'antd'
+import { Card } from 'antd' // Button
 import BaseForm from '../../components/Form'
 import BaseTable from './../../components/Table/BaseTable'
 // import { setCreditDate } from '../../../utils/utils'
 import { config } from './formList'
 import { opt_log_summary_list } from '../../services/api'
-import { wrapAuth } from '../../components/AuthButton'
+// import { wrapAuth } from '../../components/AuthButton'
 import OperationView from './operationView'
 import moment from 'moment'
 import './index.less'
-const AuthButton = wrapAuth(Button)
+// const AuthButton = wrapAuth(Button)
 
 function OperationLogs(props) {
   const [tableData, setTableData] = useState([]) // list数据
@@ -34,10 +34,10 @@ function OperationLogs(props) {
     setResponseData(responseData)
   }, [filterParams])
 
-  const viewFile = (record) => {
-    setDetail(record)
-    setDocumentDetailVisible(true)
-  }
+  // const viewFile = (record) => {
+  //   setDetail(record)
+  //   setDocumentDetailVisible(true)
+  // }
 
   useEffect(() => {
     requestList()
@@ -52,22 +52,22 @@ function OperationLogs(props) {
   }, [props.history])
 
   useEffect(() => {
-    const host = process.env.NODE_ENV === 'development' ? 'http://47.99.203.15' : '/file'
-    const importFile = (record) => {
-      const url = '/' + record.fileName
-      window.location.href = host + url
-    }
-    const renderDom = (record) => {
-      return (<>
-        <AuthButton type='link' onClick={ () => viewFile(record) } style={{ padding: 0 }} menu_id={ 172 }>查看</AuthButton>
-      </>)
-    }
-    const renderDomElse = (record) => {
-      return (<>
-        <AuthButton type='link' onClick={ () => toDetails(record) } menu_id={ 173 } style={{ padding: 0 }}>详情</AuthButton>
-        <AuthButton type='link' onClick={ () => importFile(record) } menu_id={ 174 } style={{ padding: 0 }}>下载</AuthButton>
-      </>)
-    }
+    // const host = process.env.NODE_ENV === 'development' ? 'http://47.99.203.15' : '/file'
+    // const importFile = (record) => {
+    //   const url = '/' + record.fileName
+    //   window.location.href = host + url
+    // }
+    // const renderDom = (record) => {
+    //   return (<>
+    //     <AuthButton type='link' onClick={ () => viewFile(record) } style={{ padding: 0 }} menu_id={ 172 }>查看</AuthButton>
+    //   </>)
+    // }
+    // const renderDomElse = (record) => {
+    //   return (<>
+    //     <AuthButton type='link' onClick={ () => toDetails(record) } menu_id={ 173 } style={{ padding: 0 }}>详情</AuthButton>
+    //     <AuthButton type='link' onClick={ () => importFile(record) } menu_id={ 174 } style={{ padding: 0 }}>下载</AuthButton>
+    //   </>)
+    // }
     setFormList([
       {
         type: 'INPUT',
@@ -96,73 +96,50 @@ function OperationLogs(props) {
     ])
     setTableColumns([
       {
-        title: '序号',
-        dataIndex: 'optLogId',
-        key: 'optLogId'
-      },
-      {
-        title: '操作人',
-        dataIndex: 'userName',
-        key: 'userName'
-      },
-      {
-        title: '操作类型',
-        dataIndex: 'operatorType',
-        key: 'operatorType',
-        render: (record) => {
-          let typeName = ''
-          switch (record) {
-            case 'insert':
-              typeName = '新增'
-              break
-            case 'update':
-              typeName = '修改'
-              break
-            case 'delete':
-              typeName = '删除'
-              break
-            case 'import':
-              typeName = '导入'
-              break
-          }
-          return typeName
-        }
-      },
-      {
-        title: '操作描述',
-        dataIndex: 'optSummary',
-        key: 'optSummary'
-      },
-      {
-        title: 'IP',
-        dataIndex: 'ip',
-        key: 'ip'
-      },
-      {
-        title: '时间',
-        dataIndex: 'createTime',
-        key: 'createTime',
-        render: (record) => {
-          if (record && JSON.stringify(record).indexOf('T') !== -1) {
-            return <span>{record.replace('T', ' ')}</span>
-          } else {
-            return <span>{record}</span>
-          }
-        }
-      },
-      {
-        title: '操作',
-        dataIndex: 'operation',
-        key: 'operation',
-        render: (text, record) => {
-          if (record.operatorType === 'import') {
-            return renderDomElse(record)
-          } else {
-            return renderDom(record)
-          }
-        },
-        width: 150
+        title: '创建者Id',
+        dataIndex: 'creator',
+        key: 'creator'
+      }, {
+        title: '操作人员',
+        dataIndex: 'username',
+        key: 'username'
+      }, {
+        title: '模块名称',
+        dataIndex: 'module',
+        key: 'module'
+      }, {
+        title: '方法名称',
+        dataIndex: 'method',
+        key: 'method'
+      }, {
+        title: '请求地址',
+        dataIndex: 'url',
+        key: 'url',
+        ellipsis: true
+      }, {
+        title: '请求参数',
+        dataIndex: 'param',
+        key: 'param',
+        ellipsis: true
+      }, {
+        title: '具体创建时间',
+        dataIndex: 'createTimeStr',
+        key: 'createTimeStr',
+        ellipsis: true
       }
+      // {
+      //   title: '操作',
+      //   dataIndex: 'operation',
+      //   key: 'operation',
+      //   render: (text, record) => {
+      //     if (record.operatorType === 'import') {
+      //       return renderDomElse(record)
+      //     } else {
+      //       return renderDom(record)
+      //     }
+      //   },
+      //   width: 150
+      // }
     ])
   }, [toDetails])
 

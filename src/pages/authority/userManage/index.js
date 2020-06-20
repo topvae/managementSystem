@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { withRouter } from 'react-router-dom'
 import './index.less'
-import { Row, Col, Card, Button, Modal, message } from 'antd'
+import { Row, Col, Card, Button, Modal } from 'antd'
 import BaseForm from '../../../components/Form'
 import BaseTable from '../../../components/Table/BaseTable'
 import { formList, config, users, usersconfig } from './formList'
@@ -21,56 +21,41 @@ function RoleManage(props) {
   const [params, setParams] = useState({ page: 1 }) // 分页参数
   const tableColumns = [
     {
-      title: '用户ID',
-      dataIndex: 'roleId',
-      key: 'roleId',
+      title: '姓名',
+      dataIndex: 'name',
+      key: 'name',
       width: 200
-    },
-    {
-      title: '用户名',
+    }, {
+      title: 'ITC账号',
+      dataIndex: 'userName',
+      key: 'userName',
+      width: 200
+    }, {
+      title: '角色名称',
       dataIndex: 'roleName',
       key: 'roleName',
       width: 200
-    },
-    {
-      title: '所属部门',
-      dataIndex: 'deptName',
-      key: 'deptName',
+    }, {
+      title: '部门',
+      dataIndex: 'department',
+      key: 'department',
       width: 200
-    },
-    {
-      title: '角色',
-      dataIndex: 'roleNames',
-      key: 'roleNames',
-      width: 200
-    },
-    {
+    }, {
       title: '邮箱',
       dataIndex: 'email',
       key: 'email',
       width: 200
-    },
-    {
-      title: '手机号',
-      dataIndex: 'mobile',
-      key: 'mobile',
+    }, {
+      title: '电话',
+      dataIndex: 'phone',
+      key: 'phone',
       width: 200
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
-      sorter: true,
-      render: (record) => {
-        if (JSON.stringify(record).indexOf('T') !== -1) {
-          return <span>{record.replace('T', ' ')}</span>
-        } else {
-          return <span>{record}</span>
-        }
-      },
+    }, {
+      title: '工作电话',
+      dataIndex: 'officeTel',
+      key: 'officeTel',
       width: 200
-    },
-    {
+    }, {
       title: '操作',
       dataIndex: 'operation',
       key: 'operation',
@@ -78,11 +63,12 @@ function RoleManage(props) {
       render: (index, record) => {
         return (
           <div>
-            <AuthButton type='link' className='edit_style' onClick={ () => editOrganization(record.userId) } menu_id={ 80 }>修改</AuthButton>
+            <AuthButton type='link' className='edit_style' onClick={ () => editOrganization(record.userId) } menu_id={ 80 }>变更角色</AuthButton>
+            <AuthButton type='link' className='edit_style' onClick={ () => freezeUser(record.roleId) } menu_id={ 70 }>冻结</AuthButton>
           </div>
         )
       },
-      width: 200
+      width: 250
     }
   ]
   const userArr = [{ id: 1, rule: '管理员' }, { id: 2, rule: '研发人员' }, { id: 3, rule: '测试人员' }]
@@ -104,7 +90,6 @@ function RoleManage(props) {
   // 选择表格获取的数据
   const selectedItems = (selectedRowKey, selectedRows, selectedIds) => {
     setSelectedRowKeys(selectedRowKey)
-    // setSelectedRows(selectedRows)
   }
 
   // 查询表单
@@ -141,23 +126,19 @@ function RoleManage(props) {
   }, [userData, userArr])
 
   // 删除用户
-  const deleteUser = () => {
-    if (selectedRowKeys.length === 0) {
-      message.warning('请选择用户')
-    } else {
-      Modal.confirm({
-        title: '删除用户',
-        content: '确认删除吗?',
-        onOk: () => {
-          post_user_delete(selectedRowKeys)
-            .then(res => {
-              Modal.success({ content: '删除成功' })
-              setParams({})
-              setSelectedRowKeys([])
-            })
-        }
-      })
-    }
+  const freezeUser = (id) => {
+    Modal.confirm({
+      title: '冻结用户',
+      content: '确认冻结用户吗?',
+      onOk: () => {
+        post_user_delete(id)
+          .then(res => {
+            Modal.success({ content: '冻结成功' })
+            setParams({})
+            setSelectedRowKeys([])
+          })
+      }
+    })
   }
   // 用户新增
   const addRole = useCallback(params => {
@@ -211,7 +192,6 @@ function RoleManage(props) {
             {
               <div className='btnWrap'>
                 <AuthButton type='primary' icon='plus' onClick={ addOrganization } className='add' menu_id={ 69 }>新增用户</AuthButton>
-                <AuthButton className='del' icon='delete' onClick={ deleteUser } menu_id={ 70 }>删除用户</AuthButton>
               </div>
             }
           </Col>
@@ -222,7 +202,6 @@ function RoleManage(props) {
           dataSource={ tableData } // list数据
           columns={ tableColumns }
           selectedItems={ selectedItems } // 子组件传来的所有参数，顺序为：selectedRowKeys, selectedRows, selectedIds
-          type={ 'checkbox' } // 2种类型，{'checkbox'}多选 {'radio'}单选 不写type默认没有选框
           request={ requestList }
         />
       </Card>

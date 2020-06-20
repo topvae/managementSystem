@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { withRouter } from 'react-router-dom'
 import './index.less'
-import { Row, Col, Card, Button, Modal, message } from 'antd'
+import { Row, Col, Card, Button, Modal } from 'antd'
 import BaseForm from '../../../components/Form'
 import BaseTable from '../../../components/Table/BaseTable'
 import { formList, config } from './formList'
@@ -17,42 +17,15 @@ function RoleManage(props) {
   const [params, setParams] = useState({ page: 1 }) // 分页参数
   const tableColumns = [
     {
-      title: '角色ID',
-      dataIndex: 'roleId',
-      key: 'roleId',
+      title: '名称',
+      dataIndex: 'name',
+      key: 'name',
       width: 200
     },
     {
-      title: '角色名称',
-      dataIndex: 'roleName',
-      key: 'roleName',
-      width: 200
-    },
-    {
-      title: '所属部门',
-      dataIndex: 'deptName',
-      key: 'deptName',
-      width: 200
-    },
-    {
-      title: '备注',
-      dataIndex: 'remark',
-      key: 'remark',
-      width: 200
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
-      sorter: true,
-      // eslint-disable-next-line react/display-name
-      render: (record) => {
-        if (JSON.stringify(record).indexOf('T') !== -1) {
-          return <span>{record.replace('T', ' ')}</span>
-        } else {
-          return <span>{record}</span>
-        }
-      },
+      title: '描述',
+      dataIndex: 'desc',
+      key: 'desc',
       width: 200
     },
     {
@@ -64,6 +37,7 @@ function RoleManage(props) {
         return (
           <div>
             <AuthButton type='link' className='edit_style' onClick={ () => editOrganization(record.roleId) } menu_id={ 79 }>修改</AuthButton>
+            <AuthButton type='link' className='edit_style' onClick={ () => deleteRole(record.roleId) } menu_id={ 62 }>删除</AuthButton>
           </div>
         )
       },
@@ -109,22 +83,18 @@ function RoleManage(props) {
   }
   // 删除角色
   const deleteRole = () => {
-    if (selectedRowKeys.length === 0) {
-      message.warning('请选择角色')
-    } else {
-      Modal.confirm({
-        title: '删除角色',
-        content: '确认删除吗?',
-        onOk: () => {
-          post_role_delete(selectedRowKeys)
-            .then(res => {
-              Modal.success({ content: '删除成功' })
-              setParams({})
-              setSelectedRowKeys([])
-            })
-        }
-      })
-    }
+    Modal.confirm({
+      title: '删除角色',
+      content: '确认删除吗?',
+      onOk: () => {
+        post_role_delete(selectedRowKeys)
+          .then(res => {
+            Modal.success({ content: '删除成功' })
+            setParams({})
+            setSelectedRowKeys([])
+          })
+      }
+    })
   }
 
   const editOrganization = (ids) => {
@@ -147,7 +117,6 @@ function RoleManage(props) {
             {
               <div className='btnWrap'>
                 <AuthButton type='primary' icon='plus' onClick={ addRole } className='add' menu_id={ 61 }>新增角色</AuthButton>
-                <AuthButton className='del' icon='delete' onClick={ deleteRole } menu_id={ 62 }>删除角色</AuthButton>
               </div>
             }
           </Col>
@@ -158,7 +127,6 @@ function RoleManage(props) {
           dataSource={ tableData } // list数据
           columns={ tableColumns }
           selectedItems={ selectedItems } // 子组件传来的所有参数，顺序为：selectedRowKeys, selectedRows, selectedIds
-          type={ 'checkbox' } // 2种类型，{'checkbox'}多选 {'radio'}单选 不写type默认没有选框
           request={ requestList }
         />
       </Card>
