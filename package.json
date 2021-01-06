@@ -50,7 +50,7 @@
     "@ant-design/compatible": "^1.0.1",
     "@uiw/react-codemirror": "^2.2.1",
     "antd": "^3.20.7",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "copy-to-clipboard": "^3.2.0",
     "echarts": "^4.8.0",
     "echarts-for-react": "^2.0.16",
